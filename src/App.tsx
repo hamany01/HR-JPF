@@ -431,7 +431,7 @@ export default function App() {
             </div>
           </div>
           
-          <p className="text-center mt-12 text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">SmartHire AI &copy; 2026 • VERSION 3.1</p>
+          <p className="text-center mt-12 text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">SmartHire AI &copy; 2026 • VERSION 3.2</p>
         </motion.div>
       </div>
     );
@@ -498,7 +498,7 @@ export default function App() {
             </div>
             <div className="flex items-center gap-3">
               <div className="h-px w-8 bg-slate-200"></div>
-              <span className="bg-white px-3 py-1.5 rounded-full border border-slate-100 shadow-sm text-indigo-600">Version 3.1</span>
+              <span className="bg-white px-3 py-1.5 rounded-full border border-slate-100 shadow-sm text-indigo-600">Version 3.2</span>
             </div>
           </footer>
         </main>

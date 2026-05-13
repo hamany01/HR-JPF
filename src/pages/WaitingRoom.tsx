@@ -142,7 +142,7 @@ export function WaitingRoom({ token, db, updateDb }: WaitingRoomProps) {
                 <div className="h-px w-8 bg-slate-100"></div>
              </div>
           </div>
-          <span className="absolute bottom-4 left-4 right-4 text-center text-[10px] font-black text-slate-200 uppercase tracking-widest">Version 3.0</span>
+          <span className="absolute bottom-4 left-4 right-4 text-center text-[10px] font-black text-slate-200 uppercase tracking-widest">Version 3.2</span>
         </motion.div>
       </div>
     );

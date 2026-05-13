@@ -43,13 +43,46 @@ export function JobsView({ db, updateDb, onNavigate }: JobsViewProps) {
           <h2 className="text-2xl font-black text-slate-900 tracking-tight">إدارة الوظائف</h2>
           <p className="text-slate-500 text-sm mt-1">عرض وتحرير كافة الفرص الوظيفية المتاحة.</p>
         </div>
-        <button 
-          onClick={() => { setEditingJob(null); setIsModalOpen(true); }}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold text-sm hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
-        >
-          <Plus size={18} />
-          إضافة وظيفة جديدة
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => {
+              const hrJob: Job = {
+                id: 'hr-manager-' + Math.random().toString(36).slice(2, 5),
+                title: "مدير موارد بشرية (HR Manager)",
+                department: "إدارة الموارد البشرية",
+                description: "نحن نبحث عن مدير موارد بشرية ذو خبرة لقيادة فريقنا وتطوير استراتيجيات الموارد البشرية التي تدعم أهداف العمل العامة. ستكون مسؤولاً عن التوظيف والتدريب والتعويضات والمزايا وعلاقات الموظفين.",
+                requirements: "خبرة لا تقل عن 5 سنوات في إدارة الموارد البشرية. شهادة جامعية في إدارة الأعمال أو الموارد البشرية. إجادة اللغتين العربية والإنجليزية. مهارات قيادية وتواصل ممتازة.",
+                criteria: [
+                  "الخبرة المهنية",
+                  "المهارات القيادية",
+                  "الثقافة التنظيمية",
+                  "حل النزاعات",
+                  "التخطيط الاستراتيجي"
+                ],
+                questions: [
+                  "ما هي أكبر التحديات التي واجهتها كمدير موارد بشرية وكيف تعاملت معها؟",
+                  "كيف تضمن بقاء الشركة ممتثلة لقوانين العمل المحلية؟",
+                  "صف استراتيجيتك لتحسين الاحتفاظ بالموظفين (Employee Retention).",
+                  "كيف تتعامل مع تقييمات الأداء السنوية لضمان الإنصاف والفعالية؟"
+                ],
+                status: "active",
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+              };
+              updateDb({ jobs: [...db.jobs, hrJob] });
+            }}
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-white text-indigo-600 border border-indigo-100 rounded-2xl font-bold text-sm hover:bg-indigo-50 transition-all shadow-sm"
+          >
+            عينة وظيفة HR
+          </button>
+          <button 
+            onClick={() => { setEditingJob(null); setIsModalOpen(true); }}
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold text-sm hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
+          >
+            <Plus size={18} />
+            إضافة وظيفة جديدة
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

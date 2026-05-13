@@ -123,7 +123,7 @@ export function PublicQuestionnaire({ candidate, job, onSubmit }: PublicQuestion
                 <div className="h-px w-8 bg-slate-100"></div>
              </div>
           </div>
-          <span className="absolute bottom-4 left-4 right-4 text-center text-[10px] font-black text-slate-200">VERSION 3.0</span>
+          <span className="absolute bottom-4 left-4 right-4 text-center text-[10px] font-black text-slate-200">VERSION 3.2</span>
         </motion.div>
       </div>
     );
@@ -288,7 +288,7 @@ export function PublicQuestionnaire({ candidate, job, onSubmit }: PublicQuestion
 
       <footer className="h-20 bg-white/50 backdrop-blur-md border-t border-white/40 px-8 flex items-center justify-between text-slate-400 text-[10px] font-black uppercase tracking-wider relative z-20">
          <span>جميع الحقوق محفوظة &copy; {new Date().getFullYear()} - فريق إدارة الموارد البشرية</span>
-         <span className="bg-slate-100 px-3 py-1 rounded-full text-slate-500">Version 3.0</span>
+         <span className="bg-slate-100 px-3 py-1 rounded-full text-slate-500">Version 3.2</span>
       </footer>
     </div>
   );
