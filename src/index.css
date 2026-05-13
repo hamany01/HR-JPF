@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Cairo", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer base {
+  body {
+    @apply antialiased text-slate-800 bg-slate-50;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+.frosted {
+  @apply bg-white/70 backdrop-blur-lg border border-white/40 shadow-xl shadow-slate-200/50;
+}
+
+.frosted-header {
+  @apply bg-white/60 backdrop-blur-md border-b border-white/40 shadow-sm;
+}
+
+.frosted-sidebar {
+  @apply bg-white/40 backdrop-blur-md border-l border-white/40;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
