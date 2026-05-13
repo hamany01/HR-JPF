@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import React from 'react';
-import { Menu, Bell, Search, User, X, Trash2, Calendar, Info, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Menu, Bell, Search, User as UserIcon, X, Trash2, Calendar, Info, CheckCircle, AlertTriangle } from 'lucide-react';
 import { Job, AppDatabase, AppNotification } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
+
+import { User } from 'firebase/auth';
 
 interface HeaderProps {
   view: string;
@@ -11,9 +13,10 @@ interface HeaderProps {
   db: AppDatabase;
   updateDb: (updates: Partial<AppDatabase>) => void;
   onToggleSidebar: () => void;
+  user?: User | null;
 }
 
-export function Header({ view, job, db, updateDb, onToggleSidebar }: HeaderProps) {
+export function Header({ view, job, db, updateDb, onToggleSidebar, user }: HeaderProps) {
   const [showNotifications, setShowNotifications] = useState(false);
   const unreadCount = db.notifications?.filter(n => !n.is_read).length || 0;
 
@@ -192,11 +195,18 @@ export function Header({ view, job, db, updateDb, onToggleSidebar }: HeaderProps
         
         <div className="flex items-center gap-3 pl-2 group cursor-pointer transition-all">
           <div className="hidden sm:block text-right">
-            <p className="text-xs font-bold text-slate-700 leading-none">عبدالرحمن</p>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">مدير التوظيف</p>
+            <p className="text-xs font-black text-slate-800 leading-none truncate max-w-[120px]">
+              {user?.displayName || 'مدير النظام'}
+            </p>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wider font-bold">إدارة الموارد البشرية</p>
           </div>
-          <div className="w-9 h-9 rounded-full bg-white border-2 border-white shadow-sm flex items-center justify-center text-slate-400 group-hover:text-indigo-600 transition-all overflow-hidden">
-            <User size={18} />
+          <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 shadow-sm flex items-center justify-center text-slate-400 group-hover:text-indigo-600 transition-all overflow-hidden relative">
+            {user?.photoURL ? (
+              <img src={user.photoURL} alt="" className="w-full h-full object-cover" />
+            ) : (
+              <UserIcon size={20} />
+            )}
+            <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white"></div>
           </div>
         </div>
       </div>

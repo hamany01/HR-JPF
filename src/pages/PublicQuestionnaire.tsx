@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Candidate, Job } from '../types';
 import { 
   Clock, 
@@ -6,7 +6,10 @@ import {
   CheckCircle2, 
   GraduationCap,
   ChevronRight,
-  AlertCircle
+  AlertCircle,
+  Smartphone,
+  ShieldCheck,
+  ArrowLeft
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
@@ -18,15 +21,33 @@ interface PublicQuestionnaireProps {
 }
 
 export function PublicQuestionnaire({ candidate, job, onSubmit }: PublicQuestionnaireProps) {
-  const [step, setStep] = useState<'welcome' | 'questions' | 'success' | 'error'>('welcome');
+  const [step, setStep] = useState<'verify' | 'welcome' | 'questions' | 'success' | 'error'>('verify');
+  const [phoneInput, setPhoneInput] = useState('');
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [verifying, setVerifying] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     if (!candidate || !job) {
       setStep('error');
     }
   }, [candidate, job]);
+
+  const handleVerify = (e: React.FormEvent) => {
+    e.preventDefault();
+    setVerifying(true);
+    setErrorMsg('');
+
+    setTimeout(() => {
+      if (candidate && (candidate.phone === phoneInput || candidate.phone.replace(/\s/g, '') === phoneInput.replace(/\s/g, ''))) {
+        setStep('welcome');
+      } else {
+        setErrorMsg('رقم الجوال غير متطابق مع بيانات المرشح المسجلة لدينا.');
+      }
+      setVerifying(false);
+    }, 1000);
+  };
 
   const handleFinalSubmit = () => {
     onSubmit(answers);
@@ -41,13 +62,85 @@ export function PublicQuestionnaire({ candidate, job, onSubmit }: PublicQuestion
     }
   };
 
+  if (step === 'verify') {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6 text-center font-sans" dir="rtl">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md w-full bg-white p-12 rounded-[3.5rem] shadow-2xl border border-slate-100 relative overflow-hidden"
+        >
+          <div className="absolute top-0 left-0 w-full h-2 bg-indigo-600"></div>
+          
+          <div className="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner">
+             <Smartphone size={32} />
+          </div>
+
+          <h1 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">التحقق من الهوية</h1>
+          <p className="text-slate-500 text-sm leading-relaxed mb-8">للمتابعة، يرجى إدخال رقم الجوال المسجل في نظام السمو للتوظيف.</p>
+
+          <form onSubmit={handleVerify} className="space-y-6">
+            <div className="relative">
+              <input 
+                type="tel" 
+                value={phoneInput}
+                onChange={(e) => setPhoneInput(e.target.value)}
+                placeholder="رقم الجوال (مثال: 05XXXXXXXX)"
+                className="w-full h-16 bg-slate-50 border-2 border-slate-100 rounded-2xl px-6 text-xl tracking-widest text-center font-black focus:border-indigo-600 focus:bg-white transition-all outline-none"
+                required
+              />
+              {errorMsg && (
+                <motion.p 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-500 text-[10px] font-black mt-2"
+                >
+                  {errorMsg}
+                </motion.p>
+              )}
+            </div>
+
+            <button 
+               type="submit"
+               disabled={verifying}
+               className="w-full h-16 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white rounded-2xl font-black shadow-xl shadow-indigo-200 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
+            >
+              {verifying ? (
+                <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                <>
+                  <ShieldCheck size={20} />
+                  <span>تأكيد الهوية والدخول</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-10 pt-10 border-t border-slate-50">
+             <div className="flex items-center justify-center gap-3 text-slate-300 mb-2">
+                <div className="h-px w-8 bg-slate-100"></div>
+                <span className="text-[10px] uppercase font-black tracking-widest">SmartHire Security</span>
+                <div className="h-px w-8 bg-slate-100"></div>
+             </div>
+          </div>
+          <span className="absolute bottom-4 left-4 right-4 text-center text-[10px] font-black text-slate-200">VERSION 3.0</span>
+        </motion.div>
+      </div>
+    );
+  }
+
   if (step === 'error') {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 text-center" dir="rtl">
-        <div className="max-w-md bg-white p-12 rounded-[2rem] shadow-xl border border-slate-200">
-           <AlertCircle size={64} className="text-red-500 mx-auto mb-6" />
-           <h1 className="text-2xl font-black text-slate-900 mb-2">عذراً، الرابط غير صالح</h1>
-           <p className="text-slate-500 text-sm leading-relaxed">يبدو أن الرابط الذي تحاول الوصول إليه منتهي الصلاحية أو غير صحيح. يرجى التواصل مع مسؤول التوظيف.</p>
+        <div className="max-w-md bg-white p-12 rounded-[3.5rem] shadow-2xl border border-slate-100">
+           <div className="w-20 h-20 bg-red-50 text-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6">
+              <AlertCircle size={40} className="animate-pulse" />
+           </div>
+           <h1 className="text-2xl font-black text-slate-900 mb-4">الرابط غير صالح أو مفقود</h1>
+           <p className="text-slate-500 text-sm leading-relaxed mb-6">عذراً، لم نتمكن من العثور على بياناتك المرتبطة بهذا الرابط. قد يكون الرابط خاطئاً أو تم حذفه من قِبل مسؤول التوظيف.</p>
+           <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100 text-amber-700 text-[10px] font-bold leading-relaxed">
+             ملاحظة للمسؤول: إذا كنت تختبر التطبيق، تأكد من تصدير واستيراد البيانات إذا فتحت الرابط في متصفح مختلف، أو قم بتفعيل ربط Firebase للمزامنة التلقائية.
+           </div>
         </div>
       </div>
     );
@@ -193,8 +286,9 @@ export function PublicQuestionnaire({ candidate, job, onSubmit }: PublicQuestion
         )}
       </main>
 
-      <footer className="h-20 bg-white/50 backdrop-blur-md border-t border-white/40 px-8 flex items-center justify-center text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] relative z-20">
-         جميع الحقوق محفوظة &copy; {new Date().getFullYear()} - فريق إدارة الموارد البشرية
+      <footer className="h-20 bg-white/50 backdrop-blur-md border-t border-white/40 px-8 flex items-center justify-between text-slate-400 text-[10px] font-black uppercase tracking-wider relative z-20">
+         <span>جميع الحقوق محفوظة &copy; {new Date().getFullYear()} - فريق إدارة الموارد البشرية</span>
+         <span className="bg-slate-100 px-3 py-1 rounded-full text-slate-500">Version 3.0</span>
       </footer>
     </div>
   );

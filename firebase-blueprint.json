@@ -1,0 +1,104 @@
+{
+  "entities": {
+    "Job": {
+      "title": "Job Posting",
+      "description": "A job opening or position",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "department": { "type": "string" },
+        "description": { "type": "string" },
+        "requirements": { "type": "string" },
+        "criteria": { "type": "array", "items": { "type": "string" } },
+        "questions": { "type": "array", "items": { "type": "string" } },
+        "status": { "type": "string", "enum": ["active", "draft", "paused", "closed"] },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "department", "status"]
+    },
+    "Candidate": {
+      "title": "Candidate",
+      "description": "An applicant for a job",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "job_id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "cv_url": { "type": "string" },
+        "status": { "type": "string" },
+        "interview_date": { "type": "string" },
+        "meeting_link": { "type": "string" },
+        "questions_token": { "type": "string" },
+        "invitation_sent_at": { "type": "string" },
+        "link_sent_at": { "type": "string" },
+        "queue_number": { "type": "number" },
+        "is_online": { "type": "boolean" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "job_id", "name", "phone", "status"]
+    },
+    "Evaluation": {
+      "title": "Evaluation",
+      "description": "Interview evaluation result",
+      "type": "object",
+      "properties": {
+        "candidate_id": { "type": "string" },
+        "job_id": { "type": "string" },
+        "scores": { "type": "object" },
+        "positives": { "type": "string" },
+        "negatives": { "type": "string" },
+        "notes": { "type": "string" },
+        "total_score": { "type": "number" },
+        "score_percentage": { "type": "number" },
+        "final_decision": { "type": "string" },
+        "evaluated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "PreAnswer": {
+      "title": "Questionnaire Answers",
+      "description": "Answers to preliminary questions",
+      "type": "object",
+      "properties": {
+        "answers": { "type": "object" },
+        "submitted_at": { "type": "string", "format": "date-time" },
+        "is_completed": { "type": "boolean" }
+      }
+    },
+    "InterviewSession": {
+      "title": "Queue Session",
+      "description": "Real-time queue tracking for a job",
+      "type": "object",
+      "properties": {
+        "job_id": { "type": "string" },
+        "current_queue_number": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "paused", "finished"] },
+        "last_updated": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "System alert or notification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string" },
+        "is_read": { "type": "boolean" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "jobs": { "schema": "Job", "description": "Job listings" },
+    "candidates": { "schema": "Candidate", "description": "Candidate profiles" },
+    "evaluations": { "schema": "Evaluation", "description": "Candidate scores" },
+    "preAnswers": { "schema": "PreAnswer", "description": "Survey results" },
+    "sessions": { "schema": "InterviewSession", "description": "Live queue sessions" },
+    "notifications": { "schema": "Notification", "description": "System logs" }
+  }
+}

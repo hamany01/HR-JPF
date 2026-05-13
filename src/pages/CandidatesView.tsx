@@ -157,31 +157,47 @@ export function CandidatesView({ db, updateDb, ctx, onNavigate }: CandidatesView
     // Fallback if not found in db.templates (e.g. older DB)
     if (!template) {
       if (type === 'all-in-one') {
-        message = `مرحباً ${candidate.name}، يسعدنا اهتمامك بالانضمام لفريقنا في (${job?.title || 'شركتنا'})! 🚀
+        message = `مرحباً *${candidate.name}*، يسعدنا اهتمامك بالانضمام لفريقنا في (${job?.title || 'شركتنا'})! 🚀
 
 لقد تم تحديد موعد مقابلتك الشخصية، ويسعدنا مشاركتك التفاصيل والروابط الهامة:
 
-📍 تفاصيل موعدك:
+📍 *تفاصيل موعدك:*
 📅 التاريخ: ${candidate.interview_date ? new Date(candidate.interview_date).toLocaleDateString('ar-SA') : '-'}
 ⏰ الوقت: ${candidate.interview_date ? new Date(candidate.interview_date).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }) : '-'}
-🎫 رقمك في الانتظار: #${candidate.queue_number || '-'}
+🎫 رقمك في الانتظار: *#${candidate.queue_number || '-'}*
 
-📋 الخطوات المطلوبة:
-1️⃣ الأسئلة التمهيدية (يرجى إكمالها الآن وقبل الموعد):
+📋 *الخطوات المطلوبة:*
+1️⃣ *الأسئلة التمهيدية* (يرجى إكمالها الآن وقبل الموعد):
 🔗 ${window.location.origin}/?q=${candidate.questions_token}
 
-2️⃣ ساحة الانتظار الذكية (استخدم هذا الرابط وقت المقابلة):
+2️⃣ *ساحة الانتظار الذكية* (استخدم هذا الرابط وقت المقابلة):
 🔗 ${window.location.origin}/?w=${candidate.questions_token}
 
 تمنياتنا لك بكل التوفيق،
-فريق إدارة الموارد البشرية`;
+*فريق إدارة الموارد البشرية*`;
       } else if (type === 'questions') {
-        message = `مرحباً ${candidate.name}، نود تذكيرك بإكمال الأسئلة التمهيدية لوظيفة (${job?.title}) من خلال الرابط: ${window.location.origin}/?q=${candidate.questions_token}
-نتمنى لك التوفيق،
-فريق إدارة الموارد البشرية`;
+        message = `مرحباً *${candidate.name}*، مبروك تجاوزك المرحلة الأولى! 🌟
+
+نود تذكيرك بضرورة إكمال *"الأسئلة التمهيدية"* لوظيفة (${job?.title}) للبدء في إجراءات المرحلة التالية.
+
+يرجى الضغط على الرابط التالي للإجابة:
+🔗 ${window.location.origin}/?q=${candidate.questions_token}
+
+نتمنى لك رحلة موفقة معنا،
+*فريق إدارة الموارد البشرية*`;
       } else {
-        message = `مرحباً ${candidate.name}، تم تأكيد موعد مقابلتك لوظيفة (${job?.title}) في تاريخ ${candidate.interview_date ? new Date(candidate.interview_date).toLocaleDateString('ar-SA') : '-'} الساعة ${candidate.interview_date ? new Date(candidate.interview_date).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }) : '-'}. يمكنك الانضمام عبر الرابط: ${candidate.meeting_link || '-'}
-فريق إدارة الموارد البشرية`;
+        message = `مرحباً *${candidate.name}*، يسعدنا تأكيد موعد مقابلتك الشخصية! ✅
+
+تفاصيل الوظيفة: *${job?.title || ''}*
+📅 التاريخ: ${candidate.interview_date ? new Date(candidate.interview_date).toLocaleDateString('ar-SA') : '-'}
+⏰ الوقت: ${candidate.interview_date ? new Date(candidate.interview_date).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }) : '-'}
+
+رابط الدخول للمقابلة الرقمية:
+🔗 ${candidate.meeting_link || '-'}
+
+يرجى التواجد في ساحة الانتظار قبل الموعد بـ 5 دقائق.
+تمنياتنا لك بالتوفيق،
+*فريق إدارة الموارد البشرية*`;
       }
     } else {
       message = template.content;
